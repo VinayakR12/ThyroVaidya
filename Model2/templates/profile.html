@@ -1,0 +1,200 @@
+{% extends 'dashboard.html' %}
+{% block head_dashboard %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
+{% endblock %}
+{% block user_content %}
+<style>
+#heading1 {
+    color: #003366;
+    font-weight: 900;
+    text-align: center;
+    font-size: 35px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    margin-bottom:25px;
+}
+
+#heading1:hover {
+    color: #0057b7;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+
+    table {
+    width: 90%;
+    margin: 10px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dddddd;
+}
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+    th {
+        background-color:  #00008B;;
+        color: white;
+    }
+    tbody tr:nth-of-type(odd) {
+        background-color: #f3f3f3;
+    }
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+    a {
+        color: #004c8c;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    button {
+        background-color: #FF2400;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #FF4433;
+    }
+    .download {
+        background-color: #00008B;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .download:hover {
+        background-color: #3F00FF;
+    }
+    .noFound{
+    color: red;
+    font-weight: 500;
+    text-align: center;
+    font-size: 25px;
+    transition: all 0.3s ease-in-out;
+    margin-bottom:25px;
+    }
+</style>
+
+<div>
+    <h2 id="heading1">Thyroid Report History </h2>
+    {% if reports %}
+    <table>
+        <thead>
+            <tr>
+                <th>Report Name</th>
+                <th>Age</th>
+                <th>Result</th>
+                <th>Issued Date</th>
+                <th>Download Report</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+
+            <tr>
+                <td>{{ report.name }}</td>
+                <td>{{ report.age }}</td>
+                <td>{{ report.prediction }}</td>
+                <td>
+                    {% if report.pdf_generated_date %}
+                        {{ report.pdf_generated_date }}
+                    {% else %}
+                        No PDF available
+                    {% endif %}
+                </td>
+                 <script>
+                    function showSuccessAlert() {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Your report has been downloaded successfully.",
+                            icon: "success",
+                            timer: 3000,  // 3 seconds
+                            showConfirmButton: false,  // No confirm button, alert will close automatically
+                        });
+                    }
+                </script>
+
+                <td>
+                    {% if report.generated_pdf %}
+                        <a href="{% url 'download_pdf' report.id %}" onclick="showSuccessAlert()">
+                            <button class="download">Download</button>
+                        </a>
+                    {% else %}
+                        No PDF available
+                    {% endif %}
+                </td>
+
+         <script>
+    function dis(event){
+        event.preventDefault();
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user confirms, show success message and submit the form
+                swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your Report File has been Deleted.",
+                    icon: "success"
+                }).then(() => {
+                    // Submit the form after the success alert
+                    event.target.submit();
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // If the user cancels, show cancellation message
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Your Report is Safe.",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
+
+<td>
+    <!-- The form that sends a POST request to delete the report -->
+    <form method="POST" action="{% url 'delete_report' report.id %}" onsubmit="dis(event)">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+</td>
+
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="noFound">No reports are available.</p>
+{% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'dashboard.html' %}
+
+{% block user_content %}
+    <div class="container text-center" style="max-width: 1000px; margin: auto;">
+        <h1 class="mt-4">Welcome to Your Thyroid Health Dashboard!</h1>
+        <p class="mt-3 text-center">Your health journey starts here. Stay informed about your thyroid health and monitor any symptoms.</p>
+
+        <div class="thyroid-info mt-4">
+            <h3 style="text-align: center; font-weight: bold; color: #007bff;">Thyroid Health</h3>
+            <p>Your thyroid health is essential to your overall well-being, and this dashboard is designed to empower you on your health journey. The thyroid gland, located in your neck, plays a pivotal role in regulating your body's metabolism, energy levels, and hormonal balance.</p>
+            <p>In today's fast-paced world, understanding how lifestyle choices impact your thyroid function is crucial. Stress management, a balanced diet rich in nutrients, and regular physical activity are key components that contribute to optimal thyroid health. This dashboard serves as a hub for monitoring your health and staying informed about your thyroid.</p>
+            <p>We encourage you to engage with the resources available here. Whether you're looking to book a thyroid test, learn more about maintaining a healthy lifestyle, or connect with specialists, your proactive approach to health is vital. Let's take charge of your thyroid health together!</p>
+        </div>
+
+        <div class="motivational-quote mt-4">
+            <h4>Motivational Quote</h4>
+            <div class="quote-box">
+                <p class="quote-text">"It is health that is real wealth and not pieces of gold and silver."</p>
+                <p style="text-align: right; font-style: italic; margin-right: 20px;"> — Mahatma Gandhi </p>
+            </div>
+        </div>
+
+        <div class="actions mt-4">
+            <h4>Next Steps</h4>
+            <p>What would you like to explore?</p>
+            <a href="{%  url 'thyroid_model' %}" class="btn btn-primary">Thyroid 3D Model</a>
+            <a href="{%  url 'info' %}" class="btn btn-secondary">Learn About Thyroid</a>
+            <a href="{%  url 'doctor' %}" class="btn btn-info">Find a Specialist</a>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        h1 {
+            color: #343a40;
+            font-weight: bold;
+            font-size: 36px;
+        }
+
+        h4 {
+            color: #007bff;
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #495057;
+            font-size: 20px;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .thyroid-info, .motivational-quote, .actions {
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            text-align: left;
+        }
+
+        .quote-box {
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .quote-text {
+            font-style: italic;
+            color: #343a40;
+            font-size: 18px;
+        }
+
+        .btn {
+            margin-top: 15px;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+    </style>
+{% endblock %}

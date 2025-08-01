@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ThyroVaidya{% endblock %}</title>
+    <link rel="icon" href="{% static 'img.png' %}" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    {% block extra_head %}
+
+    {% endblock %}
+
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="content">
+        {% block content %}
+
+
+        {% endblock %}
+    </div>
+    <footer style="background-color: #333;  padding: 20px; text-align: center; width: 100%; position: relative; bottom: 0; bottom-margin:5px;">
+    <p style="margin: 0; color:#ffffff; font-size:18px; text-align:center;">© 2024 ThyroVaidya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

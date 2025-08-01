@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block extra_head %}
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Specific styles for the login page */
+        .login-page {
+            background: linear-gradient(to right, #4a90e2, #357ABD);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Login container styles */
+        .login-container-unique {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-container-unique:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Title styles */
+        .form-title-unique {
+            font-size: 2.2em;
+            font-weight: 900;
+            color: #003366;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Label styles */
+        .label-unique {
+            font-weight: 500;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        /* Input styles */
+        .input-unique {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: border 0.3s ease;
+        }
+
+        .input-unique:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        /* Button styles */
+        .btn-login-unique {
+            background-color: #003366;
+            border-color: #003366;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-login-unique:hover {
+            background-color: #002244;
+            color: white;
+            font-weight: bold;
+            border-color: #002244;
+            transform: scale(1.05);
+        }
+
+        /* Footer text styles */
+        .footer-text-unique {
+            margin-top: 20px;
+            color: #555;
+            text-align: center;
+        }
+
+        .footer-text-unique a {
+            color: #4a90e2;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-text-unique a:hover {
+            color: #357ABD;
+            text-decoration: underline;
+        }
+    </style>
+ <script>
+                    function showSuccess(event) {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "User Log In successfully.",
+                            icon: "success",
+                            timer: 3000,
+                            showConfirmButton: false,
+                        });
+                    }
+                </script>
+{% endblock %}
+{% block content %}
+    <div class="login-page">
+        <div class="login-container-unique">
+            <h2 class="form-title-unique">Login</h2>
+            <form method="post" onsubmit="showSuccess(event)">
+                {% csrf_token %}
+                <label for="username" class="label-unique">Username:</label>
+                <input type="text" id="username" name="username" class="input-unique" required>
+                <label for="password" class="label-unique">Password:</label>
+                <input type="password" id="password" name="password" class="input-unique" required>
+                <button type="submit" class="btn btn-login-unique">Login</button>
+            </form>
+            <div class="footer-text-unique">
+                <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+                <p><a href="{% url 'password' %}">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

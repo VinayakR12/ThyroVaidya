@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thyroid Disease Research{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9f5f5;
+            color: #333;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Header styling */
+        .header {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #005f73, #0a9396);
+            color: #fff;
+            border-radius: 0 0 50px 50px; /* Rounded corners at the bottom */
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #d3d3d3;
+        }
+
+        /* Main content styling */
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .section {
+            background: #ffffff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: justify;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section h2 {
+            color: #005f73;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #0a9396;
+            padding-bottom: 5px;
+        }
+
+        p, ul {
+            font-size: 1em;
+            color: #555;
+        }
+
+        ul li {
+            padding: 5px 0;
+            color: #005f73;
+            list-style-type: circle;
+        }
+
+        /* Button styling */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #005f73;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px; /* Fully rounded button */
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0a9396;
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        /* Chart styling */
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        /* Increase chart size */
+        canvas {
+            max-width: 400px; /* Set max width */
+            max-height: 400px; /* Set max height */
+            width: 100%; /* Ensure responsive width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-title {
+            font-size: 1.5em; /* Title size */
+            margin-bottom: 10px; /* Spacing below title */
+            color: #005f73; /* Title color */
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>Thyroid Health in Kolhapur District</h1>
+    <p>Insights into prevalence, causes, and the impact of environmental factors on thyroid health in Kolhapur</p>
+</div>
+
+<div class="container">
+    <div class="section">
+        <h2>Introduction</h2>
+        <p>Thyroid disorders are among the most common endocrine conditions worldwide, second only to diabetes in prevalence. Affecting the thyroid gland, a small but critical organ responsible for producing hormones that regulate metabolism, growth, and energy, the consequences of thyroid dysfunction can be far-reaching. Globally, approximately 300 million people are estimated to live with thyroid-related disorders, and India contributes significantly to this number, with around 42 million cases nationwide. Various factors, including iodine deficiency, environmental stressors, and hormonal imbalances, play a role in the manifestation of thyroid disorders. The Kolhapur district in Maharashtra exemplifies a region with a high prevalence of thyroid disorders, particularly among women, influenced by unique local environmental and dietary factors. This analysis explores thyroid disease trends in Kolhapur, highlighting patient demographics, common causes, and the distribution of specific thyroid conditions.</p>
+    </div>
+
+    <div class="section">
+        <h2>Thyroid Disorders in Kolhapur</h2>
+        <p>Kolhapur’s population experiences a notably high rate of thyroid disorders, with hypothyroidism being the most prevalent condition. This prevalence is influenced by environmental factors unique to Kolhapur, such as soil iodine deficiency due to agricultural practices, deforestation, and changes in river courses that result in soil erosion and iodine leaching. These environmental conditions affect the iodine content in locally grown crops, leading to inadequate dietary iodine intake among Kolhapur’s residents. Additionally, social and lifestyle factors, like diet composition and low awareness about iodine-rich foods, further contribute to thyroid disorder risks. This setting makes Kolhapur a critical area for examining the impact of environmental and dietary factors on thyroid health.</p>
+    </div>
+
+    <div class="section">
+        <h2>Patient Rate and Demographics</h2>
+        <p>In a study of 167 individuals in Kolhapur, about <strong>95%</strong> were women, with most cases being between 31-40 years old, highlighting the gender and age influence in thyroid disorders. Women in Kolhapur are particularly vulnerable, largely due to hormonal influences such as estrogen, which affects thyroid function. Men, though less affected, experience symptoms when thyroid dysfunctions occur.</p>
+    </div>
+
+    <div class="section chart-container">
+        <h2>Prevalence of Thyroid Disorders</h2>
+        <div class="chart-title">Types of Thyroid Disorders</div> <!-- Added title for the chart -->
+        <canvas id="thyroidChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data for Thyroid Disorder Types Chart
+        const thyroidData = {
+            labels: ['Hypothyroidism', 'Euthyroidism', 'Hyperthyroidism'],
+            datasets: [{
+                label: 'Thyroid Disorders',
+                data: [51.5, 31.1, 17.4],
+                backgroundColor: ['#005f73', '#0a9396', '#94d2bd'],
+                borderColor: '#333',
+                borderWidth: 1
+            }]
+        };
+
+        const thyroidChartConfig = {
+            type: 'pie',
+            data: thyroidData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        };
+
+        // Render Thyroid Disorder Chart
+        new Chart(document.getElementById('thyroidChart'), thyroidChartConfig);
+    </script>
+
+    <div class="section">
+        <h2>Causes of Thyroid Disorders in Kolhapur</h2>
+        <b>Kolhapur’s high thyroid disorder rates are linked to several unique local factors:</b>
+        <ul>
+            <li><strong>Iodine Deficiency: </strong>Kolhapur’s soil is low in iodine, largely due to environmental issues such as deforestation, river course changes, and flooding. This iodine deficiency is passed through the food chain to residents’ diets, leading to high rates of hypothyroidism.</li>
+            <li><strong>Environmental Conditions:</strong> Excessive rainfall, soil erosion, and deforestation contribute to poor iodine retention in soil, leading to deficient local crops and diets.</li>
+            <li><strong>Autoimmune Disorders:</strong> Autoimmunity is a factor in conditions like Hashimoto’s thyroiditis, leading to hypothyroidism, and is often influenced by genetic predisposition.</li>
+            <li><strong>Gender-Based Hormonal Influences: </strong>Estrogen affects thyroid health, and women are generally more susceptible to thyroid dysfunction. In Kolhapur, women in their 30s and 40s have shown a high prevalence of thyroid conditions.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Types of Thyroid Disorders in Kolhapur</h2>
+        <p>The types of thyroid disorders observed in Kolhapur vary, though hypothyroidism is predominant:</p>
+        <ul>
+            <li><strong>Hypothyroidism:</strong> Makes up 51.5% of cases, causing fatigue, weight gain, and cold intolerance. Linked closely to the region’s iodine deficiency.</li>
+            <li><strong>Euthyroidism:</strong> Represents 31.1% of cases, where the thyroid functions normally, yet symptoms may still arise due to other factors.</li>
+            <li><strong>Hyperthyroidism:</strong> Accounts for 17.4% of cases, characterized by excessive hormone production, resulting in symptoms such as weight loss, increased heart rate, and anxiety.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Summary</h2>
+        <p>Kolhapur’s thyroid health issues are significantly influenced by environmental and dietary factors. Understanding the unique local dynamics and the patient demographic is vital for developing effective interventions. Awareness programs focusing on iodine intake and regular screenings for thyroid health can help mitigate the high prevalence of thyroid disorders in Kolhapur.</p>
+    </div>
+    <div class="section">
+    <h2>Reference</h2>
+    <p>The information presented above is derived from the following research paper:</p>
+   <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.worldwidejournals.com/international-journal-of-scientific-research-(IJSR)/recent_issues_pdf/2023/December/evaluation-of-thyroid-profile-of-known-cases-of-thyroid-disease-among-the-population-of-kolhapur-a-retrospective-observational-study_December_2023_4781017201_5215664.pdf&ved=2ahUKEwjU1bLF4bWJAxUmTWcHHQbMBkgQFnoECBIQAQ&usg=AOvVaw2D9SBvT5am0hHaULJ6XVSU"> <b>"Evaluation of Thyroid Profile of Known Cases of Thyroid Disease among the Population of Kolhapur," December 2023.</b></a>
+</div>
+
+{% endblock %}

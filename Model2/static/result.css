@@ -1,0 +1,108 @@
+body {
+    background-color: #e0f7fa; /* Light sky blue background */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6; /* Improved line spacing for better readability */
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff; /* White background for content */
+    border-radius: 15px; /* Slightly more rounded corners */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow for a lifted effect */
+    transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+}
+
+.container:hover {
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+h2 {
+    color: #0077b6; /* Darker sky blue */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem; /* Larger font size */
+    text-transform: uppercase; /* Uppercase for emphasis */
+}
+
+h3 {
+    color: #0096c7; /* Slightly lighter blue */
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 1.75rem; /* Increased font size */
+    border-bottom: 2px solid #0077b6; /* Underline effect */
+    padding-bottom: 5px; /* Space below heading */
+}
+
+/* Card styling for lab values and recommendations */
+.card {
+    background-color: #ffffff; /* White background for cards */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Padding inside cards */
+    margin-top: 20px; /* Space between cards */
+    transition: transform 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.card:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+ul li {
+    margin-bottom: 10px;
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+ul li:hover {
+    color: #0096c7; /* Change color on hover */
+}
+
+.lab-values, .recommendations {
+    padding: 15px; /* Padding inside sections */
+}
+
+.lab-values {
+    border-left: 5px solid #0077b6; /* Left border for emphasis */
+}
+
+.recommendations {
+    border-left: 5px solid #0096c7; /* Left border for emphasis with a different color */
+}
+
+/* Add a button style for any buttons in your content */
+button {
+    background-color: #0077b6; /* Primary button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #005f8c; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+    h2 {
+        font-size: 2rem; /* Adjust heading size */
+    }
+    h3 {
+        font-size: 1.5rem; /* Adjust heading size */
+    }
+}

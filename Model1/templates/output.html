@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% block title %}Symptoms Prediction {% endblock %}
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #e9f2ff, #f8f9fa);
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+            padding-top:0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        #resultContainer, #analysisContainer {
+            margin: 20px 0;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background-color: #e9ecef;
+        }
+        #chartContainer {
+            width: 100%;
+            max-width: 500px; /* Set a smaller max width for the pie chart */
+            margin: auto;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        #toggleButtons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #00008b;
+            width:180px;
+            height:50px;
+            color: white;
+            font-size: 20px;
+            border: none;
+            padding: 12px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #analysisText {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .point {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            background-color: #f1f8ff;
+        }
+        .chartjs-tooltip {
+            color: #fff;
+            background: #007bff;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .chart-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5em;
+            color: #343a40;
+            font-weight: bold;
+        }
+
+.risk-block {
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: justify;
+    line-height: 1.6;
+}
+
+/* Styling based on thyroid risk levels */
+.risk-block.low {
+    background-color: #90EE90;
+    color: black;
+}
+
+.risk-block.medium {
+    background-color: 	#FFD580;
+    color: black;
+}
+
+.risk-block.high {
+    background-color: 	#FFCCCB ;
+color: black;
+}
+.risk-block.medium h1 {
+    color: #e65100;
+}
+
+.risk-block.low h1 {
+    color: #027148;
+}
+.risk-block.high h1 {
+    color: #8B0000;
+}
+.risk-block h1 {
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.risk-block p {
+    margin: 0;
+    font-size: 1.1em;
+}
+         .back-button {
+            position: absolute;
+            width:100px;
+            height:40px;
+            top:90px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #00008b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+{% endblock %}
+{% block content %}
+<h1>Thyroid Disease Result</h1>
+<div class="risk-block {{prediction|lower}}">
+    <h1>You Have {{prediction}} Thyroid Risk.</h1>
+    <p>{{risk_description}}</p>
+</div>
+
+<div id="toggleButtons">
+    <button onclick="toggleDisplay('chart')">Show Chart</button>
+    <button onclick="toggleDisplay('analysis')">Show Analysis</button>
+</div>
+
+<div id="resultContainer">
+    <h2 class="chart-title">Symptom Distribution</h2>
+    <div id="chartContainer">
+        <canvas id="myPieChart"></canvas>
+    </div>
+</div>
+
+<div id="analysisContainer">
+    <h2>Symptom Analysis:</h2>
+    <div id="analysisText"></div>
+</div>
+ <button class="back-button" onclick="goBack()">Back</button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+<script>
+    const symptomData = {
+        {% for symptom, percentage in symptom_data %}
+            '{{ symptom }}': {{ percentage }},
+        {% endfor %}
+    };
+
+    const labels = Object.keys(symptomData);
+    const data = Object.values(symptomData);
+
+    const predictionValue = '{{ prediction|default:0 }}';
+
+    const symptomDescriptions = {
+        'Age_Group': 'As you get older, your risk for thyroid problems increases because your body goes through many changes.',
+        'Gender': 'Women are more likely to have thyroid issues due to hormonal changes throughout life, such as during periods, pregnancy, and menopause.',
+        'Pregnancy': 'During pregnancy, hormonal changes significantly impact the thyroid, making it crucial to monitor thyroid function for both the mother\'s health and the baby\'s development.',
+        'Family_History_of_Thyroid': 'If someone in your family has had thyroid problems, you may be more likely to develop them too.',
+        'Goiter': 'A goiter is an enlarged thyroid gland and can indicate a problem with hormone production.',
+        'Fatigue': 'Feeling very tired can mean your thyroid isn’t making enough hormones, affecting your energy levels.',
+        'Hair_Loss': 'Losing hair can happen if your thyroid isn’t working properly, particularly if it’s underactive.',
+        'Sensitivity_to_Cold_or_Heat': 'If you feel cold or hot more than usual, it might be due to thyroid issues that affect how your body controls temperature.',
+        'Increased_Sweating': 'Sweating a lot can happen if your thyroid is overactive, leading to more energy use.',
+        'Constipation_or_More_Bowel_Movements': 'If you often have trouble with digestion or constipation, it could be linked to an underactive thyroid.',
+        'Depression_or_Anxiety': 'Mood changes, like feeling down or anxious, can be connected to thyroid problems, as hormones affect your mood.',
+        'Difficulty_Concentrating_or_Memory_Problems': 'If you find it hard to focus or remember things, thyroid issues could play a role.',
+        'Dry_or_Itchy_Skin': 'Changes in your skin, such as dryness or itchiness, can occur if your thyroid isn’t working right.',
+        'Weight_Change': 'Gaining or losing weight unexpectedly can indicate thyroid issues, as hormones help control your metabolism.',
+        'Heart_Rate_Changes': 'If your heart races or beats slowly, it could be related to thyroid problems affecting your heart.',
+        'Muscle_Weakness': 'Feeling weak in your muscles may be a sign of an underactive thyroid, where there aren’t enough hormones to keep your muscles strong.',
+    };
+
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+const myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: data,
+            backgroundColor: [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                '#9966FF', '#FF9F40', '#FF3D00', '#2196F3',
+                '#FFEB3B', '#4CAF50', '#FF5722', '#9C27B0',
+                '#00BCD4', '#CDDC39', '#FF9800', '#673AB7',
+                '#FF5733', '#33FF57', '#3357FF', '#FF33A6',
+                '#FF33B8', '#4A4E69', '#22223B'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Symptoms Impact on Thyorid Disease', // Set your desired title
+                font: {
+                    size: 24 // You can adjust the font size
+                }
+            },
+            datalabels: {
+                anchor: 'end',
+                align: 'end',
+                formatter: (value, context) => {
+                    return `${context.chart.data.labels[context.dataIndex]}: ${value}%`;
+                },
+            },
+        },
+        animation: {
+            animateRotate: true,
+            animateScale: true,
+        },
+       layout: {
+            padding: {
+                bottom: 30,
+            }
+        }
+    }
+});
+
+
+    function toggleDisplay(type) {
+        const resultContainer = document.getElementById('resultContainer');
+        const analysisContainer = document.getElementById('analysisContainer');
+        const analysisText = document.getElementById('analysisText');
+
+        if (type === 'chart') {
+            resultContainer.style.display = 'block';
+            analysisContainer.style.display = 'none';
+        } else {
+            resultContainer.style.display = 'none';
+            analysisContainer.style.display = 'block';
+
+            // Populate analysis text based on predictions
+            let analysis = '';
+            if (predictionValue === 'High') {
+                analysis += '<span class="highlight">You are at high risk for thyroid disease</span> based on your symptoms. Here are some details:<br>';
+            } else if (predictionValue === 'Medium') {
+                analysis += '<span class="highlight">You are at medium risk for thyroid disease</span>. Consider monitoring your symptoms.<br>';
+            } else if (predictionValue === 'Low') {
+                analysis += '<span class="highlight">You are at low risk for thyroid disease</span>. Keep up with your health and regular check-ups.<br>';
+            }
+
+            analysis += '<div id="symptomList"><ul>';
+            // Loop through all symptoms and their descriptions
+            for (const symptom in symptomDescriptions) {
+                if (symptomData[symptom] > 0) {
+                    analysis += `<li class="point"><span class="bold">${symptom}:</span> ${symptomDescriptions[symptom]}</li>`;
+                }
+            }
+            analysis += '</ul></div>';
+            analysisText.innerHTML = analysis;
+        }
+    }
+    toggleDisplay('chart');
+</script>
+{% endblock %}

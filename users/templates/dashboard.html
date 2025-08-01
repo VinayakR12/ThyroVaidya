@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block extra_head %}
+{% block head_dashboard %} {% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #f3f4f6, #e0e7ff);
+        }
+        .user-dashboard-sidebar {
+            min-height: 100vh;
+            background-color: #003366;
+            color: white;
+            padding-top: 20px;
+            width: 320px;
+        }
+        .user-dashboard-sidebar a {
+            color: white;
+            padding: 15px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .user-dashboard-sidebar a:hover {
+            background-color: #7fb3f2;
+            color: black;
+            transform: scale(1.05);
+        }
+        .user-dashboard-content {
+            padding: 30px;
+            transition: margin-left 0.2s;
+        }
+        .user-dashboard-title {
+            text-align: left;
+            margin-left:10px;
+            margin-bottom: 20px;
+            color: #003366;
+        }
+        .user-welcome-message {
+            text-align: center;
+            font-size: 1.5em;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+        .appointment-list {
+            margin-top: 20px;
+        }
+        .appointment-item {
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #e3f2fd;
+            transition: box-shadow 0.3s;
+        }
+        .appointment-item:hover {
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+        }
+         .dashboard-title {
+        font-weight: bold;
+        color: white;
+    }
+    </style>
+<script>
+    function showSuccessAlert() {
+    Swal.fire({
+        title: "Success!",
+        text: "User log out successfully.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+    }).then(() => {
+        window.location.href = "/logout";
+    });
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <nav class="col-md-2 user-dashboard-sidebar">
+          <h3 class="text-center mt-4 dashboard-title" style="color:white;">Dashboard</h3>
+
+                <a href="{% url 'profile_dashboard' %}">Profile</a>
+                <a href="{% url 'model2_profile_page' %}">My Thyroid Reports</a>
+                <a href="{% url 'user_appointments' %}">Appointment History</a>
+                <a href="{% url 'index' %}">Symptoms Analysis</a>
+                <a href="{% url 'reportanalysis' %}">Report Analysis</a>
+                <a href="{% url 'password' %}">Reset Password</a>
+                <a onclick="showSuccessAlert(event)">Log Out</a>
+            </nav>
+            <main class="col-md-10 ml-sm-auto user-dashboard-content">
+                <h2 class="user-dashboard-title">Hellow, <strong>{{ user.username }}</strong></h2>
+
+                {% block user_content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

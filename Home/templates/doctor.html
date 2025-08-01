@@ -1,0 +1,461 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hospital & Doctors{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #2d2d2d;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Header Styling */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #0d47a1, #42a5f5);
+            color: #fff;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: #e3f2fd;
+        }
+
+        /* Container Styling */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Card Styling */
+        .hospital-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center the cards */
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .hospital-item {
+            background: #e3f2fd;
+            width: 300px; /* Fixed width for all cards */
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            text-align: center; /* Center text in the cards */
+        }
+
+        .hospital-item:hover {
+            transform: scale(1.05);
+            background: #42a5f5;
+            color: #fff;
+        }
+
+        .hospital-item h3 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: bold; /* Bold title */
+        }
+
+        .hospital-item h4 {
+            margin: 5px 0;
+            font-size: 1.2em;
+            color: #0d47a1; /* Color for doctor's name */
+        }
+
+        .button-container {
+            margin-top: 10px;
+        }
+
+        .button {
+            background: #0d47a1;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background: #42a5f5;
+        }
+
+        .location-button {
+            background: #ffc107; /* Location button color */
+            color: #fff;
+        }
+
+        .location-button:hover {
+            background: #ffca28; /* Hover effect for location button */
+        }
+
+        /* Modal Styling */
+        #appointmentModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #0d47a1;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+
+
+        .modal-content select {
+            width: 400px;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+.date1{
+        width: 380px;
+         margin-top: 5px;
+         padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background: #0d47a1;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background: #42a5f5;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #0d47a1;
+        }
+
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div class="header">
+        <h1>Thyroid Hospitals and Clinics in Kolhapur</h1>
+        <p>Your trusted guide to thyroid healthcare facilities and specialists</p>
+    </div>
+
+    <div class="container">
+        <div class="hospital-list">
+            <div class="hospital-item">
+                <h3>Excel Endocrine Centre</h3>
+                <h4>Dr. Sharvil Gadve</h4>
+                <br>
+                <p>Address: S.T.Colony, Mahalaxminagar, Rajarampuri, Kolhapur</p>
+                <p>Specialization: Endocrinologist, Diabetologist</p>
+                <div class="button-container">
+                    <a href="https://maps.app.goo.gl/Pef44n6zZcqYkRAT8" class="button location-button">Location</a>
+                    <a href="#" class="button" onclick="checkLoginAndOpenModal()">Book Appointment</a>
+                </div>
+            </div>
+            <div class="hospital-item">
+                <h3>Doshi’s Diabetes & Endocrine Centre</h3>
+                <h4>Dr Nikita Doshi</h4>
+                <p>Address: behind Hotel Maratha Residency, New Shahupuri, Kolhapur</p>
+
+                <p>Specialization: Endocrinologist MBBS, MD Med. DM Endo</p>
+                <div class="button-container">
+                    <a href="https://maps.app.goo.gl/oX2LrgthgLoziw8G6" class="button location-button">Location</a>
+                    <a href="#" class="button" onclick="checkLoginAndOpenModal()">Book Appointment</a>
+                </div>
+            </div>
+            <div class="hospital-item">
+                <h3>Hormocare</h3>
+                <h4>Dr. Amit Asalkar</h4>
+                 <br>
+                <p>Address:4th Line, Shahupuri, Kolhapur</p>
+                <p>Specialization: Endocrinologist,MBBS,MD,Diab .PGD Endo
+                </p>
+                <div class="button-container">
+                    <a href="https://maps.app.goo.gl/VgjjJf2VEJpAaGhZA" class="button location-button">Location</a>
+                    <a href="#" class="button" onclick="checkLoginAndOpenModal()">Book Appointment</a>
+                </div>
+            </div>
+            <div class="hospital-item">
+                <h3>Dr Prachi's Endocrine Care Clinic</h3>
+                <h4>Dr. Prachi Jadhav</h4>
+                <p>Address:Padma Rukmini,E Ward, Shahupuri, Kolhapur, Maharashtra 416001</p>
+                <p>Specialization:   MBBS, MD, DM Endocrinologist</p>
+                <div class="button-container">
+                    <a href="https://maps.app.goo.gl/1rgNXUqQjcBSFgYw6" class="button location-button">Location</a>
+                    <a href="#" class="button" onclick="checkLoginAndOpenModal()">Book Appointment</a>
+                </div>
+            </div>
+            <div class="hospital-item">
+                <h3>Patil Hospital, Kolhapur</h3>
+                <h4>Dr. Snehdeep Patil</h4>
+                 <br>
+                <p>Address: Address: Patil Hospital, Rankala, near Yedekar Hospital, Kolhapur</p>
+                <p>Specialization: MBBS,MD Endocrinologist</p>
+                 <br>
+                <div class="button-container">
+                    <a href="https://g.co/kgs/BJafUhv" class="button location-button">Location</a>
+                    <a href="#" class="button" onclick="checkLoginAndOpenModal()">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="appointmentModal" onclick="closeBookingModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h2>Book Appointment</h2>
+            <form id="appointmentForm" method="post"  onsubmit="success(event)">
+                {% csrf_token %}
+                <label for="doctor">Select Doctor:</label>
+                <select id="doctor" name="doctor" required>
+
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" class="date1" required>
+
+                <label for="time_slot">Time Slot:</label>
+                <select id="time_slot" name="time_slot" required>
+                    <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
+                    <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                    <option value="1:00 PM - 2:00 PM">01:00 PM - 02:00 PM</option>
+                    <option value="07:00 PM - 08:00 PM">7:00 PM - 8:00 PM</option>
+
+                </select>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+<hr class="styled-hr">
+<hr class="styled-hr">
+
+<div class="meet-doctors-section">
+    <h2>Meet  Doctors</h2>
+    <div class="doctors-container">
+        <div class="doctor-card">
+            <div class="circle-background">
+                <img src="{% static 'DrSharvil.png' %}" alt="Doctor 1" class="doctor-image">
+            </div>
+            <p class="doctor-name">Dr. Sharvil Gadve</p>
+        </div>
+        <div class="doctor-card">
+            <div class="circle-background">
+                <img src="{% static 'NikitaDoshi.png' %}" alt="Doctor 2" class="doctor-image">
+            </div>
+            <p class="doctor-name">Dr. Nikita Doshi</p>
+        </div>
+        <div class="doctor-card">
+            <div class="circle-background">
+                <img src="{% static 'homocare.png' %}" alt="Doctor 3" class="doctor-image">
+            </div>
+            <p class="doctor-name">Dr. Amit Asalkar</p>
+        </div>
+        <div class="doctor-card">
+            <div class="circle-background">
+                <img src="{% static 'Drprachi.png' %}" alt="Doctor 4" class="doctor-image">
+            </div>
+            <p class="doctor-name">Dr. Prachi Jadhav</p>
+        </div>
+        <div class="doctor-card">
+            <div class="circle-background">
+                <img src="{% static 'Drpatil.png' %}" alt="Doctor 5" class="doctor-image">
+            </div>
+            <p class="doctor-name">Dr. Snehdeep Patil</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+  function success(event) {
+    event.preventDefault();
+    Swal.fire({
+        title: "Success!",
+        text: "Your appointment has been successfully booked.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+    }).then(() => {
+        const form = event.target;
+        form.action = "{% url 'doctor' %}";
+        form.submit();
+    });
+}
+
+  function showWarning(event) {
+    Swal.fire({
+        title: "Warning!",
+        text: "You are not logged in. Please log in to continue.",
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+    }).then(() => {
+        window.location.href = "/login";
+    });
+}
+        const isLoggedIn = {{ is_logged_in|lower }};
+
+        function checkLoginAndOpenModal() {
+            if (isLoggedIn) {
+                openBookingModal();
+            } else {
+            showWarning();
+            }
+        }
+
+        function openBookingModal() {
+            document.getElementById('appointmentModal').style.display = 'flex';
+        }
+
+        function closeBookingModal(event) {
+            if (event.target === document.getElementById('appointmentModal')) {
+                document.getElementById('appointmentModal').style.display = 'none';
+            }
+        }
+    </script>
+
+<style>
+    .meet-doctors-section {
+        text-align: center;
+        padding: 30px;
+        background: linear-gradient(159deg, rgba(8, 146, 208, 1) 0%, rgba(75, 0, 130, 1) 100%); /* Updated gradient */
+        color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+    }
+
+    .meet-doctors-section h2 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .doctors-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .doctor-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px;
+        transition: transform 0.3s;
+    }
+
+    .circle-background {
+        background: #1e3a6d; /* Circle background color */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden; /* Ensures image stays within circle */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .doctor-image {
+        width: 100%; ]
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%; /* Circular image */
+        transition: transform 0.3s; /* Image transition effect */
+    }
+
+    .doctor-card:hover .circle-background {
+        transform: scale(1.1); /* Scale effect on hover */
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    .doctor-card:hover .doctor-image {
+        transform: scale(1.1); /* Slight scale effect for image on hover */
+    }
+
+    .doctor-name {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .styled-hr {
+    border: none;
+    height: 4px;
+    background: linear-gradient(159deg, rgba(8, 146, 208, 1) 0%, rgba(75, 0, 130, 1) 100%);
+    box-shadow: 0 4px 10px rgba(0, 114, 255, 0.5);
+    margin: 30px 0;
+    border-radius: 5px;
+}
+
+
+
+</style>
+
+{% endblock %}
+
+

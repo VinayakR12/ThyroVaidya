@@ -1,0 +1,416 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Thyroid Result {% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'result.css' %}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top:40px;
+            margin-bottom:40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .tab {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            flex: 1;
+            padding: 10px;
+             background: rgb(8,146,208);
+            background: linear-gradient(159deg, rgba(8,146,208,1) 0%, rgba(75,0,130,1) 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .tab button:hover {
+            background: rgba(75,0,130,1);
+        }
+
+.btn.disabled {
+   background-color: #0056b3;
+    cursor: not-allowed;
+
+}
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 18px; /* Increased font size */
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e7f3ff; /* Light blue for even rows */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Light gray for odd rows */
+        }
+
+        .recommendations ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            background: #e7f3ff;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .normal-range-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 20px; /* Increased font size */
+            font-weight: bold;
+        }
+
+        a {
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+      .result {
+    background-color: lightblue;
+    text-align: justify;
+    font-weight: 600;
+    font-size: 1em;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+        .danger-range-message {
+            background-color: #FFD580;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 18px;
+        }.report-title {
+    font-weight: bold;
+    color: #00008B;
+    text-align: center;
+    font-size: 30px;
+    margin: 0;
+    padding: 10px;
+    background-color: rgba(30, 144, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.report-title:hover {
+    transform: scale(1.05);
+    color: #1c86e6;
+}
+
+
+     .info-btn {
+            background: rgb(8,146,208);
+            background: linear-gradient(159deg, rgba(8,146,208,1) 0%, rgba(75,0,130,1) 100%);;
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            align-self:center;
+        }
+
+        .info-btn:hover {
+            background-color: #1c86e6;
+            transform: scale(1.05);
+        }
+
+        /* Content container styling */
+        .thyroid-info-container {
+            display: none; /* Hidden by default */
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f7faff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            color: #2f4f6f;
+            font-size: 16px;
+            line-height: 1.6;
+            border-left: 5px solid #1e90ff;
+        }
+
+        /* Header styling */
+        .thyroid-info-container h4 {
+            color: #1e90ff;
+            font-size: 20px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+
+        .thyroid-info-container p {
+            color: #333;
+            font-size: 16px;
+            margin: 0;
+            padding-bottom: 10px;
+        }
+
+        .thyroid-info-container h4:hover {
+            color: #1c86e6;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<h2 class="report-title">Thyroid Health Report Analysis</h2>
+
+    <div class="container">
+
+{% if all_normal %}
+            <div class="normal-range-message">
+        Your lab results are all normal, which suggests a low chance of thyroid disease. It's still important to stay healthy and keep up with regular check-ups!
+    </div>
+
+       <div class="tab">
+            <button disabled>Lab Values Comparison</button>
+            <button disabled class="btn disabled">Dietary Recommendations</button>
+            <button disabled class="btn disabled">Exercise Recommendations</button>
+        </div>
+        {% else %}
+       <div class="danger-range-message">
+         <h2>Your lab results indicate that you have been diagnosed with <strong style="color:Red; font-size:30px;">{{ condition }}.</strong> </h2>
+        </div>
+       <div class="tab">
+            <button onclick="showTab('lab-values')">Lab Report Result</button>
+            <button onclick="showTab('diet')">Dietary Recommendations</button>
+            <button onclick="showTab('exercise')">Exercise Recommendations</button>
+        </div>
+
+        {% endif %}
+        <div id="lab-values" class="tab-content active">
+        <div class="container" style="height:7vh; "><center>
+    <button class="info-btn" onclick="toggleContent()">Learn More About Thyroid Hormones</button></center>
+</div>
+
+<div class="thyroid-info-container" id="thyroidInfo">
+    <h4>TSH (Thyroid Stimulating Hormone)</h4>
+    <p>A hormone from the pituitary gland that controls thyroid function. High TSH levels suggest hypothyroidism (underactive thyroid), while low levels indicate hyperthyroidism (overactive thyroid).</p>
+
+    <h4>T3 (Triiodothyronine)</h4>
+    <p>An active thyroid hormone that regulates metabolism and energy. It is crucial for bodily functions and is more potent than T4.</p>
+
+    <h4>T4 (Thyroxine)</h4>
+    <p>The primary hormone produced by the thyroid, involved in metabolism and energy regulation. It is converted to T3 in the body.</p>
+
+    <h4>TT4 (Total T4)</h4>
+    <p>Measures both free and bound T4 in the blood, providing a comprehensive view of thyroid hormone levels.</p>
+
+    <h4>T4U (Thyroxine Uptake)</h4>
+    <p>Assesses the availability of binding sites for T4 in the bloodstream, helping to interpret thyroid hormone levels.</p>
+
+    <h4>FTI (Free Thyroxine Index)</h4>
+    <p>Combines Total T4 and T4U to estimate the active T4 level, giving insight into thyroid function.</p>
+
+    <h4>TBG (Thyroxine-Binding Globulin)</h4>
+    <p>A protein that transports T4 and T3 in the blood. Changes in TBG levels can affect thyroid hormone availability.</p>
+</div>
+
+            <h3>Lab Report Result</h3>
+
+            {% comment %} Check if all values are within normal range {% endcomment %}
+            {% with all_normal=True %}
+                {% for feature, details in comparisons.items %}
+                    {% if details.Status != "Within normal range" %}
+                        {% with all_normal=False %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Reported Value</th>
+                        <th>Normal Range</th>
+                        <th>Conclusion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feature, details in comparisons.items %}
+                    <tr>
+                        <td>{{ feature }}</td>
+                        <td>{{ details.Your_Value }}</td>
+                        <td>{{ details.Normal_Range }}</td>
+                        <td>{{ details.Status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+
+        </div>
+
+        <div id="diet" class="tab-content">
+            <h3>Dietary Recommendations</h3>
+            <div class="recommendations">
+                <ul>
+                    {% for diet in recommendations.Diet %}
+                    <li>{{ diet }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div id="exercise" class="tab-content">
+            <h3>Exercise Recommendations</h3>
+            <div class="recommendations">
+                <ul>
+                    {% for exercise in recommendations.Exercises %}
+                    <li>{{ exercise }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+           <h3>Discover Yoga Videos for Thyroid Health</h3>
+<div class="recommendations">
+    <p>
+        Enhance your thyroid health with these insightful yoga videos. Each session is designed to promote relaxation, improve hormonal balance, and support your overall wellness.
+    </p>
+    <p>
+        <strong>Yoga Moves for a Healthy Thyroid</strong>
+        <a href="https://youtube.com/shorts/RBqv0_qqsRc?si=qKPZVb-ocw1Zkr8k" target="_blank">Watch Now</a>
+    </p>
+    <p>
+        <strong>Easy Yoga for Thyroid Wellness</strong>
+        <a href="https://youtube.com/shorts/4r-DagHHdzg?si=9p8JJwaAiiD635uq" target="_blank">Watch Now</a>
+    </p>
+    <p>
+        Dive into these practices to experience the benefits of yoga for your thyroid health!
+    </p>
+</div>
+
+        </div>
+      <h3>Result </h3>
+      {% if all_normal %}
+        <p class="result">Your lab results indicate that your thyroid function is within the <strong style="color:Green; font-size:20px;"> Normal range</strong>. This suggests that your thyroid gland is functioning properly, producing the necessary hormones to support your overall health. To maintain this balance, we encourage you to continue with a healthy lifestyle. </p>
+      {% else %}
+            {% if condition == 'Hypothyroidism' %}
+              <p class="result">Your lab results reveal that you have <strong style="color:Red; font-size:20px;"> Hypothyroidism</strong>, meaning your thyroid gland is underperforming and not producing sufficient thyroid hormones. To enhance your well-being, we have crafted personalized dietary and exercise recommendations specifically for you. We encourage you to connect with your healthcare provider to develop a comprehensive plan tailored to your needs.</p>
+            {% elif condition == 'Hyperthyroidism' %}
+              <p class="result">Your lab results indicate that you have <strong style="color:Red; font-size:20px;"> Hyperthyroidism</strong>, which signifies that your thyroid gland is overactive and generating higher levels of thyroid hormones. To support you in managing this condition effectively, we have prepared customized dietary and exercise recommendations designed to promote your health. We strongly recommend following up with your healthcare provider for a detailed assessment and a personalized treatment strategy.</p>
+            {% else %}
+              <p class="result">Your lab results indicate that your thyroid function is within the <strong style="color:Green; font-size:20px;"> Normal range</strong>. This suggests that your thyroid gland is functioning properly, producing the necessary hormones to support your overall health. To maintain this balance, we encourage you to continue with a healthy lifestyle. </p>
+            {% endif %}
+      {% endif %}
+        <h3>Learn more</h3>
+        <div class="recommendations">
+            <p>
+                <a
+                    href="https://www.1mg.com/articles/thyroid-diet-chart/?srsltid=AfmBOoqC_G5t38CbufOQJo0KNiVwh89W7Ezzb0wQexvAi_9_3y7YRktg"
+                    target="_blank"> For more Diet and Exercises visit</a>
+            </p>
+        </div>
+    </div>
+
+
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            const activeTab = document.getElementById(tabName);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to make bold the words wrapped in asterisks
+    function boldRecommendations() {
+        // Select all list items in the diet recommendations
+        const dietItems = document.querySelectorAll('#diet .recommendations li');
+        dietItems.forEach(item => {
+            item.innerHTML = item.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace '**text**' with '<strong>text</strong>'
+        });
+
+        // Select all list items in the exercise recommendations
+        const exerciseItems = document.querySelectorAll('#exercise .recommendations li');
+        exerciseItems.forEach(item => {
+            item.innerHTML = item.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace '**text**' with '<strong>text</strong>'
+        });
+    }
+
+    // Call the function to bold recommendations
+    boldRecommendations();
+});
+
+
+    function toggleContent() {
+        const content = document.getElementById("thyroidInfo");
+        content.style.display = (content.style.display === "none" || content.style.display === "") ? "block" : "none";
+    }
+
+
+</script>
+
+{% endblock %}

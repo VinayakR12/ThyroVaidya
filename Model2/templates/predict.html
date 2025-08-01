@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% block title %}Thyroid Disease Form-2 {% endblock %}
+{% block extra_head %}
+    <style>
+        /* Global Style */
+        body {
+            background-color: #e0f7fa;
+            font-family: 'Arial', sans-serif;
+            height: 120vh;
+            margin: 0;
+        }
+
+       h1 {
+        color: #00796b;
+        font-size: 3.5rem;
+        margin-top: 20px;
+        text-align: center;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+        font-weight: bold;
+         }
+
+        .form-container {
+            background: #ffffff;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+            max-width: 900px;
+            width: 90%;
+            margin: 1rem auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6); /* Black shadow effect */
+            border: 1px solid #ddd;
+            transition: box-shadow 0.3s ease;
+
+        }
+
+        h2 {
+            color: #006064;
+            font-size: 2.2rem;
+            font-weight: bold;
+
+            text-align: center;
+            margin:0;
+            margin-bottom:15px;
+        }
+
+        /* Form Group Grid Layout */
+        .form-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Styling Labels */
+        .form-group label {
+            color: #004d40;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+            font-family: 'Verdana', sans-serif;
+        }
+
+        /* Input Fields */
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #80cbc4;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #e0f2f1;
+        }
+
+        .form-control:hover {
+            border-color: #26a69a;
+            background-color: #b2dfdb;
+        }
+
+        .form-control:focus {
+            border-color: #00796b;
+            box-shadow: 0px 0px 10px rgba(0, 121, 107, 0.2);
+            background-color: #e0f7fa;
+        }
+
+        /* Button */
+        button[type="submit"] {
+            background-color: #004d40;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #00695c;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="number"].form-control {
+    max-width: 420px;
+    height:25px;
+    padding: 8px;
+    font-size: 0.9rem;
+    border: 2px solid #80cbc4;
+    border-radius: 8px;
+    background-color: #e0f2f1;
+    transition: all 0.3s ease;
+}
+        input[type="number"].form-control:hover {
+    border-color: #26a69a;
+    background-color: #b2dfdb;
+}
+
+/* Focus effect */
+input[type="number"].form-control:focus {
+    border-color: #00796b;
+    box-shadow: 0px 0px 6px rgba(0, 121, 107, 0.2);
+    background-color: #e0f7fa;
+}
+    </style>
+{% endblock %}
+{% block content %}
+
+    <h1>Thyroid Report Analysis</h1>
+
+    <div class="form-container">
+        <h2>Patient Information Form</h2>
+        <form method="POST" class="custom-form" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="full-width">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" min="0" max="120" required class="form-control" placeholder="Enter your age">
+                </div>
+
+                <div>
+                    <label for="sex">Gender:</label>
+                    <select id="sex" name="sex" required class="form-control" onchange="togglePregnancy()">
+                        <option value="" disabled selected>Select your Gender</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="goiter">Goiter:</label>
+                    <select id="goiter" name="goiter" required class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="pregnancy">Pregnancy:</label>
+                    <select id="pregnancy" name="pregnancy" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="TSH">TSH (µIU/mL) :</label>
+                    <input type="number" step="any" id="TSH" name="TSH" required class="form-control" placeholder="Enter TSH level">
+                </div>
+
+                <div>
+                    <label for="T3">T3 (ng/mL) :</label>
+                    <input type="number" step="any" id="T3" name="T3" required class="form-control" placeholder="Enter T3 level">
+                </div>
+
+                <div>
+                    <label for="TT4">TT4 (µg/dL) :</label>
+                    <input type="number" step="any" id="TT4" name="TT4" required class="form-control" placeholder="Enter TT4 level">
+                </div>
+
+                <div>
+                    <label for="T4U">T4U (µIU/mL) :</label>
+                    <input type="number" step="any" id="T4U" name="T4U" required class="form-control" placeholder="Enter T4U level">
+                </div>
+
+                <div>
+                    <label for="FTI">FTI (µg/dL) :</label>
+                    <input type="number" step="any" id="FTI" name="FTI" required class="form-control" placeholder="Enter FTI level">
+                </div>
+
+                <div>
+                    <label for="TBG">TBG (µg/mL) :</label>
+                    <input type="number" step="any" id="TBG" name="TBG" required class="form-control" placeholder="Enter TBG level">
+                </div>
+
+                <div>
+                    <label for="T4">T4 (µg/dL) :</label>
+                    <input type="number" step="any" id="T4" name="T4" required class="form-control" placeholder="Enter T4 level">
+                </div>
+            </div>
+<br><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+<br><br>
+    <script>
+        function togglePregnancy() {
+            const sex = document.getElementById("sex").value;
+            const pregnancyField = document.getElementById("pregnancy");
+
+            if (sex === "M") {
+                pregnancyField.value = "0";
+                pregnancyField.disabled = true;
+            } else {
+                pregnancyField.disabled = false;
+            }
+        }
+    </script>
+{% endblock %}

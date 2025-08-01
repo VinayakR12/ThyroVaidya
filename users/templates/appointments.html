@@ -1,0 +1,113 @@
+{% extends 'dashboard.html' %}
+
+{% block user_content %}
+<script>
+    function success(event) {
+    event.preventDefault();
+    Swal.fire({
+        title: "Success!",
+        text: "Your appointment has been Cancelled..",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+    }).then(() => {
+        const form = event.target;
+        form.submit();
+    });
+}
+</script>
+    <h3 class="text-center">Your Appointments</h3>
+    {% if appointments %}
+        <div class="appointment-list">
+            {% for appointment in appointments %}
+                <div class="appointment-item card">
+                    <div class="card-body">
+                        <h5 class="doctor-name">{{ appointment.doctor }}</h5>
+                        <p><strong>Date:</strong> {{ appointment.date }}</p>
+                        <p><strong>Time Slot:</strong> {{ appointment.time_slot }}</p>
+                        <form action="{% url 'cancel_appointment' appointment.id %}" method="POST"  onsubmit="success(event)" class="cancel-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Cancel Appointment</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-appointments">
+            <p>No appointments booked.</p>
+        </div>
+    {% endif %}
+
+    <style>
+        body {
+            background-color: #e9ecef;
+            font-family: 'Arial', sans-serif;
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margin */
+        }
+
+        .text-center {
+            text-align: center;
+            color: #343a40;
+            font-weight: bold;
+            font-size: 24px;
+            padding: 20px 0; /* Optional padding for spacing */
+        }
+
+        .appointment-list {
+            max-width: 600px; /* Adjust max width as needed */
+            margin: 20px auto; /* Center the list */
+            padding: 0; /* Remove padding */
+            display: grid;
+            gap: 20px;
+        }
+
+        .appointment-item {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .appointment-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-body {
+            color: #495057;
+        }
+
+        .doctor-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        .no-appointments {
+            text-align: center;
+            font-size: 18px;
+            color: #6c757d;
+        }
+    </style>
+{% endblock %}

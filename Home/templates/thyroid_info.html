@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thyroid Disease Information{% endblock %}
+
+{% block extra_head %}
+    <style>
+        /* Basic CSS reset */
+
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f9ff;
+            color: #333;
+            line-height: 1.6;
+
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 1em;
+            color: #555;
+        }
+
+        .left-image, .right-image {
+            width: 45%;
+            float: left;
+            margin-right: 2%;
+        }
+
+        .right-image {
+            float: right;
+            margin-left: 2%;
+        }
+
+        .content-box {
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .content-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sections */
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+        }
+
+        .section h2 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        /* Custom styling for each section */
+        .section-overview, .section-factors, .section-types, .section-hypothyroid, .section-hyperthyroid, .section-age-groups, .section-tips {
+            padding: 15px;
+        }
+
+        .icon {
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        /* Life Tips */
+        .tips {
+            background: #e6f5ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .tips li {
+            margin: 5px 0;
+            list-style-type: none;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .tips li:before {
+            content: "✔️";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #27ae60;
+            font-size: 1.2em;
+        }
+
+         .condition-section {
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        margin-bottom: 2em;
+    }
+    .condition-header {
+        display: flex;
+        align-items: center;
+    }
+    .condition-header img {
+        width: 50px;
+        margin-right: 1em;
+    }
+    h3 {
+        color: #34495e;
+    }
+
+    /* Hypothyroidism Styling */
+    .hypothyroidism {
+        background-color: #eaf2ff;
+    }
+    .hypothyroidism h3 {
+        color: #2a7bbd;
+    }
+
+    /* Hyperthyroidism Styling */
+    .hyperthyroidism {
+        background-color: #ffe8e5;
+    }
+    .hyperthyroidism h3 {
+        color: #d1473e;
+    }
+
+    .section-content p, ul {
+        color: #555;
+        line-height: 1.8;
+    }
+    .side1 {
+        background: #e6f5ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+        .text-box {
+          background-color: #e6f5ff;
+            flex: 2;
+            padding-left: 20px;
+        }
+
+        /* Section title and styling */
+        h2 {
+            color: #2b2e4a;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        /* Text and list styling */
+        p {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        ul {
+            margin-top: 10px;
+            padding-left: 20px;
+            list-style-type: disc;
+            color: #555;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .content-box:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
+
+
+    </style>
+<!--{% endblock %}-->
+
+{% block content %}
+<h1 style="text-align: center; font-size: 42px; font-family: Arial, sans-serif; margin: 15px 0;">Thyroid Gland: The Metabolism Powerhouse</h1>
+
+<div class="container">
+    <div class="content-box section section-overview" style="height:440px;">
+        <h2>What is the Thyroid?</h2>
+        <div class="left-image">
+            <img src="{% static 'thyroid.png' %}" alt="Thyroid Gland" style=" margin-left: 50px; width:75%; padding:20px; height:50%; border-radius: 8px;">
+        </div>
+       <p style="padding : 20px;   text-align: justify;">
+The <b>Thyroid</b> is a small, butterfly-shaped gland located at the base of your neck, just below the Adam's apple. Despite its size, it plays a crucial role in regulating metabolism, energy production, and hormonal balance. The primary hormones produced by the thyroid, thyroxine (T4) and triiodothyronine (T3), are essential for controlling metabolism, heart rate, body temperature, and mood. These hormones are vital for growth and development, particularly in children, and they also influence reproductive health by affecting menstrual cycles and fertility. Overall, the thyroid gland is essential for maintaining homeostasis within the body, and even minor imbalances can lead to significant health issues, such as hypothyroidism and hyperthyroidism.
+
+</p>
+ </div>
+
+    <!-- Section 2: Thyroid Disease and Risks -->
+    <div class="content-box section section-dangers">
+        <h2>How Does Thyroid Disease Affect Health?</h2>
+        <p style="padding : 20px;   text-align: justify;">Thyroid disease, when untreated, can lead to severe complications such as heart disease, weakened bones, and cognitive changes. Symptoms vary but commonly include fatigue, weight fluctuations, anxiety, and irregular heartbeats. Thyroid disorders affect various age groups differently, with symptoms potentially intensifying over time.</p>
+    </div>
+
+  <div class="content-box section section-tips">
+         <h2>Factors Affecting Thyroid Health</h2>
+        <div class="side1">
+            <ul>
+                <li><strong>Genetics</strong>: Family history increases susceptibility to thyroid issues.</li>
+                <li><strong>Diet</strong>: Low iodine intake is linked to thyroid issues; too much soy or gluten can also affect thyroid function.</li>
+                <li><strong>Hormonal Changes</strong>: Pregnancy and menopause can increase thyroid disorder risk in women.</li>
+                <li><strong>Lifestyle</strong>: Smoking, excessive stress, and high alcohol intake can negatively impact thyroid health.</li>
+            </ul>
+        </div>
+    </div>
+
+
+<div class="content-box section section-tips" style="display: flex; align-items: flex-start;">
+
+    <div style="flex: 1; padding-right: 20px;">
+        <h2>Types of Thyroid Disorders</h2>
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li><strong>Hypothyroidism</strong>: An underactive thyroid leading to weight gain, cold sensitivity, and fatigue.</li>
+            <li><strong>Hyperthyroidism</strong>: An overactive thyroid causing rapid heartbeat, weight loss, and anxiety.</li>
+            <li><strong>Goiter</strong>: An enlargement of the thyroid, usually due to iodine deficiency or inflammation.</li>
+            <li><strong>Thyroid Cancer</strong>: A less common but serious condition characterized by abnormal thyroid growth.</li>
+        </ul>
+    </div>
+    <div class="flex-item text-column" style="flex: 1;">
+        <img src="{% static 'thyroidType.png' %}" alt="Thyroid Disorders" style="width: 80%; height: 40%; margin-left:70px; border-radius: 8px;">
+    </div>
+
+</div>
+
+    <!-- Section 5: Hypothyroidism -->
+
+    <div class="content-box section section-dangers">
+        <!-- Left Side Image -->
+        <div class="left-image">
+
+            <img src="{% static 'Hypothyroid.png' %}" alt="Thyroid Gland Image"  style="margin-top:70px; margin-left:100px; width:50%;  padding:05px;  border-radius: 8px;">
+
+        </div>
+
+        <!-- Right Side Text Content -->
+        <div class="text-box">
+ <h2 >Hypothyroidism: An Overview</h2>
+  <p style="text-align:justify; margin-right:20px;">Hypothyroidism is a condition where the thyroid gland fails to produce sufficient thyroid hormones, primarily thyroxine (T4) and triiodothyronine (T3). These hormones are vital for regulating metabolism, which affects how your body uses energy. When hormone levels are low, it can lead to a slower metabolism, resulting in symptoms such as fatigue, weight gain, sensitivity to cold, and depression. Recognizing and treating hypothyroidism is crucial for maintaining overall health.
+            </p>
+            <h3>Key Symptoms</h3>
+            <ul>
+                <li>Weight gain and cold intolerance</li>
+                <li>Hair loss and dry skin</li>
+                <li>Muscle weakness and memory issues</li>
+            </ul>
+
+            <h3>How It Affects Health</h3>
+            <p>Untreated hypothyroidism can lead to serious complications, including heart issues, mental health challenges, and more. Regular checkups and understanding the symptoms are crucial.</p>
+
+            <h3>Causes & Risk Factors</h3>
+            <ul>
+                <li><strong>Genetics</strong>: Family history of thyroid disorders</li>
+                <li><strong>Hormonal Changes</strong>: Pregnancy and menopause increase risk in women</li>
+                <li><strong>Lifestyle</strong>: Stress and poor diet impact thyroid health</li>
+            </ul>
+            <h3>Treatment & Lifestyle Tips</h3>
+            <p>Hypothyroidism is commonly treated with thyroid hormone replacement. A balanced diet rich in iodine, regular exercise, and stress management can improve thyroid health.</p>
+        </div>
+    </div>
+    <!-- Hyperthyroidism Section -->
+      <div class="content-box section section-dangers">
+        <!-- Left Side Image -->
+        <div class="left-image">
+            <img src="{% static 'Hyperthyroid.png' %}"alt="Thyroid Gland Image" style="margin-top:70px; margin-left:100px; width:50%;  padding:05px;  border-radius: 8px;">
+        </div>
+
+        <!-- Right Side Text Content -->
+        <div class="text-box">
+            <h2>Hyperthyroidism: An Overview</h2><br>
+            <p style="text-align:justify; margin-right:20px;">Hyperthyroidism occurs when the thyroid gland produces excessive amounts of thyroid hormones. This overproduction leads to an accelerated metabolism, which can significantly impact various bodily functions. Common symptoms include rapid weight loss, increased heart rate, anxiety, and sensitivity to heat. Understanding and managing hyperthyroidism is essential for maintaining overall health.</p>
+            <h3>Key Symptoms</h3>
+            <ul>
+                 <li>Unexplained weight loss and appetite changes</li>
+                <li>Increased heart rate and Nervousness, anxiety,</li>
+                <li>Heat intolerance and excessive sweating</li>
+            </ul>
+
+            <h3>How It Affects Health</h3>
+            <p>Untreated hyperthyroidism can lead to serious health complications, such as heart disease, osteoporosis, and a life-threatening condition known as thyroid storm.</p>
+
+            <h3>Causes & Risk Factors</h3>
+            <ul>
+                <li><strong>Graves' Disease</strong>: An autoimmune disorder that is the most common cause of hyperthyroidism.</li>
+                <li><strong>Thyroid Nodules</strong>: Overactive nodules can produce excess hormones.</li>
+                <li><strong>Medications</strong>: Certain medications, like those containing iodine, can trigger hyperthyroidism.</li>
+            </ul>
+
+            <h3>Treatment & Lifestyle Tips</h3>
+            <p>Treatment options include antithyroid medications, radioactive iodine therapy, or surgery. A balanced diet and regular exercise can help manage symptoms effectively.</p>
+        </div>
+    </div>
+
+
+    <div class="content-box section section-tips">
+       <h2>Risk of Thyroid Disease by Age Group</h2>
+        <h3>Thyroid disease can impact all ages differently:</h3>
+        <div class="side1">
+            <ul>
+                <li><strong>Ages 1-20</strong>: Rarely affected by thyroid issues, but those with family history or genetic conditions are at a higher risk.</li>
+                <li><strong>Ages 21-35</strong>: Especially in women, hormonal changes due to pregnancy can increase thyroid disorder risk.</li>
+                <li><strong>Ages 36-65</strong>: Common age range for hypothyroidism and other thyroid issues; regular checkups recommended.</li>
+                <li><strong>Ages 66+</strong>: Higher risk of thyroid issues, with symptoms often overlapping with age-related conditions.</li>
+            </ul>
+            <p>Women face a higher risk due to hormonal fluctuations and autoimmune predisposition.</p>
+        </div>
+    </div>
+
+
+<div class="content-box section section-tips">
+        <h2>Tips for Managing Thyroid Health</h2>
+        <div class="tips">
+            <h3>Diet and Lifestyle Tips:</h3>
+            <ul>
+                <li>Eat a balanced diet rich in iodine, selenium, and zinc.</li>
+                <li>Maintain regular physical activity to boost metabolism.</li>
+                <li>Practice stress management techniques, such as meditation and yoga.</li>
+                <li>Regularly monitor thyroid levels if you have a family history.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{%endblock%}
+

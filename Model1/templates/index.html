@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% block title %}Thyroid Disease Form {% endblock %}
+{% block extra_head %}
+<style>
+    body{ font-family: 'Arial', sans-serif;
+               background-color: #e0f7fa;
+               }
+    .dis {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+    .thyroid-form-container {
+
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        width: 63%;
+        max-width: 850px;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .thyroid-form-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Darker shadow on hover */
+}
+
+
+    /* Form Header Styling */
+    .thyroid-form-header {
+        margin-top: 0;
+        font-size: 28px;
+        font-weight: bold;
+        color: #003366;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Form Elements Styling */
+    .thyroid-form-group {
+        margin-bottom: 15px;
+    }
+    .thyroid-form-group label {
+        font-weight: bold;
+        color: #003366;
+    }
+    .thyroid-form-group input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 10px;
+        accent-color: #0077b6;
+    }
+
+
+    .thyroid-grid-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .thyroid-column {
+        width: 48%;
+    }
+
+    .thyroid-form-control {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #0077b6;
+        background: #e6f7ff;
+    }
+
+    .thyroid-form-control:focus {
+        outline: none;
+        border-color: #005f99;
+        box-shadow: 0 0 4px rgba(0, 87, 153, 0.4);
+    }
+
+    .thyroid-submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(45deg, #0077b6, #0096c7);
+        border: none;
+        border-radius: 4px;
+        color: #ffffff;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .thyroid-submit-btn:hover {
+        background: #0039a6;
+    }
+    h1 {
+    color: #00796b;
+    font-size: 3.5rem;
+    margin-top: 20px;
+     margin-bottom: 0;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+</style>
+{% endblock %}
+{% block content %}
+    <h1>Thyroid Symptoms Analysis</h1>
+<div class="dis">
+
+<div class="thyroid-form-container">
+    <h2 class="thyroid-form-header">Thyroid Risk Form</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Age Group -->
+        <div class="thyroid-form-group">
+            <label for="thyroid_id_Age_Group">Enter Age :</label>
+            <input type="number" class="thyroid-form-control" id="thyroid_id_Age_Group" name="Age_Group" min="1" required style="width:98%; margin-right:30px;">
+        </div>
+
+        <!-- Gender and Pregnancy -->
+        <div class="thyroid-form-group">
+            <label for="thyroid_id_Gender">Gender :</label>
+            <select class="thyroid-form-control" id="thyroid_id_Gender" name="Gender" onchange="togglePregnancyCheckbox()">
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+            </select>
+        </div>
+        <div class="thyroid-form-group" id="thyroid_pregnancy-container" style="display: none;">
+            <label>
+                <input type="checkbox" id="thyroid_id_Pregnancy" name="Pregnancy"> Pregnancy
+            </label>
+        </div>
+
+        <!-- Symptoms in Two Columns -->
+        <div class="thyroid-grid-container">
+            <div class="thyroid-column">
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Family_History_of_Thyroid" name="Family_History_of_Thyroid"> Family History of Thyroid
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Goiter" name="Goiter"> Goiter
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Fatigue" name="Fatigue"> Fatigue
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Hair_Loss" name="Hair_Loss"> Hair Loss
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Sensitivity_to_Cold_or_Heat" name="Sensitivity_to_Cold_or_Heat"> Sensitivity to Cold or Heat
+                    </label>
+                </div>
+            </div>
+
+            <div class="thyroid-column">
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Increased_Sweating" name="Increased_Sweating"> Increased Sweating
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Constipation_or_More_Bowel_Movements" name="Constipation_or_More_Bowel_Movements"> Constipation or Digestion Issues
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Depression_or_Anxiety" name="Depression_or_Anxiety"> Depression or Anxiety
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Difficulty_Concentrating_or_Memory_Problems" name="Difficulty_Concentrating_or_Memory_Problems"> Difficulty Concentrating or Memory Problems
+                    </label>
+                </div>
+                <div class="thyroid-form-group">
+                    <label>
+                        <input type="checkbox" id="thyroid_id_Dry_or_Itchy_Skin" name="Dry_or_Itchy_Skin"> Dry or Itchy Skin
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weight Change -->
+        <div class="thyroid-form-group">
+            <label for="thyroid_id_Weight_Change">Weight Change:</label>
+            <select class="thyroid-form-control" id="thyroid_id_Weight_Change" name="Weight_Change">
+                <option value="0">No</option>
+                <option value="1">Weight Loss</option>
+                <option value="2">Weight Gain</option>
+            </select>
+        </div>
+
+        <!-- Heart Rate Changes -->
+        <div class="thyroid-form-group">
+            <label for="thyroid_id_Heart_Rate_Changes">Heart Rate Changes:</label>
+            <select class="thyroid-form-control" id="thyroid_id_Heart_Rate_Changes" name="Heart_Rate_Changes">
+                <option value="0">Stable</option>
+                <option value="1">Faster than normal heart rate</option>
+                <option value="2">Slower than normal heart rate</option>
+            </select>
+        </div>
+
+        <div class="thyroid-form-group">
+            <label for="thyroid_id_Muscle_Weakness">Muscle Weakness:</label>
+            <select class="thyroid-form-control" id="thyroid_id_Muscle_Weakness" name="Muscle_Weakness">
+                <option value="0">Normal Strength</option>
+                <option value="1">Mild Weakness</option>
+                <option value="2">Severe Weakness</option>
+            </select>
+        </div>
+
+        <div class="thyroid-form-group">
+            <label for="thyroid_id_Other_Symptoms">Any Other Symptoms :</label>
+            <input type="text" class="thyroid-form-control" id="thyroid_id_Other_Symptoms" name="Other_Symptoms" placeholder="Describe any additional symptoms" style="width:98%; margin-right:30px;">
+        </div>
+
+        <button type="submit" class="thyroid-submit-btn ">Submit</button>
+    </form>
+</div>
+</div>
+<script>
+    function togglePregnancyCheckbox() {
+        const genderSelect = document.getElementById("thyroid_id_Gender");
+        const pregnancyContainer = document.getElementById("thyroid_pregnancy-container");
+        const pregnancyCheckbox = document.getElementById("thyroid_id_Pregnancy");
+
+        if (genderSelect.value === "0") {
+            pregnancyContainer.style.display = "block";
+        } else { // Male
+            pregnancyContainer.style.display = "none";
+            pregnancyCheckbox.checked = false;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", togglePregnancyCheckbox);
+</script>
+{% endblock %}

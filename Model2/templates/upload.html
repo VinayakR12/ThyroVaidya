@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #e0f7fa;
+    }
+
+    .main-heading {
+        text-align: center;
+        font-size: 45px;
+        color: #00796b;
+        margin-top: 25px;
+        font-weight: 900;
+        text-shadow: 2px 2px 3px rgba(0, 0.2, 0, 0.3);
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: linear-gradient(to bottom right, #ffffff, #eaf4fb);
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        padding: 20px 30px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom:10%;
+        color: #333;
+    }
+
+    .container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .head {
+        text-align: center;
+        color: #004c8c;
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    /* Form Styling */
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .file-upload {
+        display: flex;
+        align-items: center;
+        border: 2px solid #004c8c;
+        padding: 10px 15px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        cursor: pointer;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .file-upload:hover {
+        border-color: #006bb6;
+        background-color: #f0f8ff;
+    }
+
+    .file-upload input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .file-upload .default-text,
+    .file-upload .file-name {
+        font-size: 14px;
+        color: #333;
+        margin-right: auto;
+    }
+
+    .file-upload label {
+        color: #004c8c;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #fff;
+        padding: 8px 15px;
+        border-radius: 5px;
+        border: 1px solid #004c8c;
+        transition: all 0.3s;
+        text-align: center;
+    }
+
+    .file-upload label:hover {
+        background-color: #004c8c;
+        color: #fff;
+    }
+
+    button {
+        background: linear-gradient(to right, #004c8c, #006bb6);
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(to right, #003b76, #005b9a);
+    }
+
+    /* Loader Styling */
+    .loader-container {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .loader {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #004c8c;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+ function showErrorAlert() {
+        Swal.fire({
+            title: "Error!",
+            text: "Invaild Report Uploaded..",
+            icon: "error",
+            timer: 1000,
+            showConfirmButton: false,
+        });
+    }
+    function handleFileChange(input) {
+        const fileNameDisplay = input.previousElementSibling;
+        const file = input.files[0];
+
+        if (file) {
+            const fileName = file.name;
+            const fileType = file.type;
+
+            if (fileType !== 'application/pdf') {
+                showErrorAlert();
+                input.value = '';
+                fileNameDisplay.textContent = 'No file selected';
+            } else {
+                fileNameDisplay.textContent = fileName;
+            }
+        } else {
+            fileNameDisplay.textContent = 'No file selected';
+        }
+    }
+
+function showSuccess() {
+        Swal.fire({
+            title: "Success!",
+            text: "Your ThyroVaidya Report has been Downloaded Successfully.",
+            icon: "success",
+            timer:1000,
+            showConfirmButton: false,
+        });
+    }
+    function showAlert() {
+        Swal.fire({
+            title: "Success!",
+            text: "Your ThyroVaidya Report has been Generated Successfully.",
+            icon: "success",
+            timer:4000,
+            showConfirmButton: false,
+        });
+    }
+
+    function showLoader(event) {
+        event.preventDefault();
+        const loaderContainer = document.querySelector('.loader-container');
+        loaderContainer.style.display = 'flex';
+
+        setTimeout(() => {
+            event.target.submit();
+        }, 2000);
+         setTimeout(() => {
+            showAlert();
+        }, 1000);
+
+    }
+</script>
+
+{% endblock %}
+
+{% block content %}
+<h1 class="main-heading">Thyroid Report Analysis</h1>
+<div class="loader-container">
+    <div class="loader"></div>
+</div>
+
+<div class="container">
+    {% if step == "upload" %}
+        <h1 class="head">Upload Thyroid Test Report (PDF)</h1>
+
+        <form method="post" enctype="multipart/form-data" onsubmit="showLoader(event)">
+            {% csrf_token %}
+            <div class="file-upload">
+                <span class="default-text">No file selected</span>
+                <input type="file" name="pdf_file" required onchange="handleFileChange(this)">
+                <label for="pdf_file">Choose File</label>
+            </div>
+            <button type="submit">Generate ThyroVaidya Report</button>
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    {% elif step == "result" %}
+    <h1 class="head">ThyroVaidy Analysis Report</h1>
+    <p><strong>Name:</strong> {{ report.name }}</p>
+    <p><strong>Result:</strong> {{ report.prediction }}</p>
+    <a href="{{ pdf_url }}" class="btn-primary">
+        <button type="button" onclick="showSuccess(event)">Download Report</button>
+    </a>
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - Thyroid Health Assistant{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<style>
+/* Base Styling */
+body {
+    background-color: #eef6fc;
+    text-align:justify;
+    color: #1a3d5f;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header and Hero Section */
+header {
+    text-align: center;
+    background: rgb(0,84,180);
+    background: linear-gradient(159deg, rgba(0,84,180,1) 0%, rgba(64,224,208,1) 100%);
+    padding: 3em 0;
+    position: relative;
+    z-index: 1;
+    border-bottom-left-radius: 40% 40px;
+    border-bottom-right-radius: 40% 40px;
+    color:#002D62;
+    text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);
+}
+
+header h1 {
+    font-size: 3.8em;
+    margin: 0.3em 0;
+    font-weight: bold;
+}
+
+header p {
+    font-size: 1.2em;
+}
+
+/* Video Background Container */
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 44vh;
+    overflow: hidden;
+}
+
+.video-container video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(30, 144, 255, 0.8), rgba(0, 191, 255, 0.8));
+    z-index: 1;
+    border-bottom-left-radius: 40% 10px;
+    border-bottom-right-radius: 40% 10px;
+}
+/* Section Styling */
+section {
+    max-width: 1200px;
+    margin: 1.5em auto; /* Adjusted margin for less vertical space */
+    padding: 1em; /* Adjusted padding for less height */
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align:justify;
+}
+
+section h2 {
+    color: #1a3d5f;
+    text-align: center;
+    margin-bottom: 0.5em; /* Adjusted margin for less space below the heading */
+    font-size: 2em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: space-evenly;
+    margin-top: 1em;
+}
+
+.grid-item {
+    flex: 1 1 280px;
+    background: #d1ecff;
+    padding: 1.5em; /* Reduced padding inside each grid item */
+    text-align:center;
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #1e90ff;
+}
+
+.grid-item:hover {
+    transform: scale(1.05);
+    background: #1e90ff;
+    color: #ffffff;
+    box-shadow: 0px 6px 15px rgba(30, 144, 255, 0.4);
+}
+
+.grid-item i {
+    font-size: 2.5em;
+    color: #1e90ff;
+    margin-bottom: 0.5em;
+
+}
+
+.grid-item:hover i {
+    color: #ffffff;
+}
+
+.grid-item h3 {
+    color: #2d4059;
+    margin-top: 0.5em;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.grid-item p {
+    color: #1a3d5f;
+    font-size: 1em;
+    text-align: justify;
+}
+
+.grid-item:hover h3,
+.grid-item:hover p {
+    color: #ffffff;
+}
+
+#introduction {
+
+    max-width: 1200px;
+    padding-left:10px;
+    background: #f9f9f9;                /* Light background color */
+    border-radius: 10px;                /* Round the corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: justify;                /* Justify text for readability */
+}
+
+footer {
+    background: #2d4059;
+    color: #ffffff;
+    text-align: center;
+    padding: 2em 0;
+    font-size: 0.9em;
+    margin-top: 3em;
+    border-top-left-radius: 50% 20px;
+    border-top-right-radius: 50% 20px;
+}
+
+footer a {
+    color: #d1ecff;
+    text-decoration: underline;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section with Video Background -->
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="{% static 'heroVideo.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+        <header>
+            <h1>ThyroVaidya</h1>
+            <p>Your Smart, Personalized Solution for Thyroid Health Monitoring and Support</p>
+        </header>
+
+    <!-- Introduction Section -->
+    <section id="introduction">
+        <h2>Welcome to ThyroVaidya</h2>
+        <p style="padding-left:10px; padding-right:10px; font-size:18px;">The ThyroVaidya is an innovative digital platform designed to empower users in managing their thyroid health. Our solution allows users to assess their risk of thyroid disease by inputting symptoms, resulting in a prediction categorized as high, medium, or low risk. For those with thyroid test results, our model analyzes T3 and T4 levels to identify specific thyroid disorders and provides personalized dietary and exercise recommendations.
+Registered users benefit from a personalized dashboard to book appointments with thyroid specialists and hospitals in the Kolhapur region. The platform also features educational resources on thyroid disease, including its types, symptoms, and treatments, complemented by an interactive 3D model of the thyroid gland.
+            Designed with a user-friendly interface, the Thyroid Health Assistant combines predictive analytics and personalized support, making it a unique tool for proactive thyroid health management. Our focus on accessibility, early detection, and informed self-care makes this platform an invaluable resource for individuals seeking to improve their thyroid health.</p>
+    </section>
+
+    <!-- Features Section -->
+<section id="features">
+        <h2>Explore Our Features</h2>
+        <div class="grid-container">
+            <div class="grid-item">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Symptom-Based Prediction</h3>
+                <p>Find out your thyroid risk level (High, Medium, Low) through a quick and simple assessment of your symptoms. Get results that guide you toward the right next steps for your health.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-vials"></i>
+                <h3>Report-Based Thyroid Analysis</h3>
+                <p>Receive a detailed analysis of your T3, T4, and TSH levels, along with expert-backed advice for managing your thyroid health based on lab results.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-utensils"></i>
+                <h3>Diet & Exercise Plans</h3>
+                <p>Get personalized diet and exercise recommendations crafted for optimal thyroid health, tailored to your unique lifestyle and health goals.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-info-circle"></i>
+                <h3>Thyroid Health Education</h3>
+                <p>Discover essential information on thyroid disease, its types, common symptoms, and treatment options. Stay informed and empowered to take control of your health.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-hospital"></i>
+                <h3>Trusted Healthcare in Kolhapur</h3>
+                <p>Access a curated list of top hospitals and thyroid specialists in Kolhapur for expert consultation and treatment options close to home.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-lock"></i>
+                <h3>Secure Login & Appointments</h3>
+                <p>Register with confidence. Our secure system keeps your information private while allowing you to easily book appointments with healthcare providers.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-dna"></i>
+                <h3>3D Thyroid Model</h3>
+                <p>See the thyroid in action! Explore a 3D model to better understand how this essential gland looks and functions within the body.</p>
+            </div>
+            <div class="grid-item">
+                <i class="fas fa-chart-line"></i>
+                <h3>Kolhapur Thyroid Statistics</h3>
+                <p>Explore thyroid health statistics for the Kolhapur district to gain valuable insights into local trends.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits">
+        <h2>Why Choose ThyroVaidya ?</h2>
+        <div class="grid-container">
+            <div class="grid-item">
+                <h3>Comprehensive Health Insights</h3>
+                <p>From symptom-based assessments to personalized lifestyle advice, we provide everything you need to make informed health decisions.</p>
+            </div>
+            <div class="grid-item">
+                <h3>Dual-Model Thyroid Analysis</h3>
+                <p>We offer both symptom and lab report-based analysis, so you receive a full understanding of your thyroid health and actionable steps to improve it.</p>
+            </div>
+            <div class="grid-item">
+                <h3>Local Care and Support in Kolhapur</h3>
+                <p>Connect with healthcare providers in Kolhapur who specialize in thyroid health, ensuring you get trusted, local care when you need it.</p>
+            </div>
+            <div class="grid-item">
+                <h3>Secure & User-Friendly Platform</h3>
+                <p>With a secure and intuitive interface, our platform is designed for easy navigation and peace of mind regarding your privacy and security.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,204 @@
+<!-- templates/navbar.html -->
+{% load static %}
+<script>
+    function showSuccessAlert() {
+    Swal.fire({
+        title: "Success!",
+        text: "User logged out successfully.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+    }).then(() => {
+        window.location.href = "/logout";
+    });
+}
+</script>
+<nav class="custom-navbar" id="navbar">
+    <div class="brand-container">
+  <img src="{% static 'img.png' %}" alt="Profile Icon" height="50px">
+  <div id="navbar-brand">ThyroVaidya</div>
+</div>
+    <div class="navbar-toggle" onclick="toggleCustomMenu()">&#9776;</div>
+    <ul class="navbar-menu" id="custom-navbar-menu">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'index' %}">Symptoms Analysis</a></li>
+        <li><a href="{% url 'reportanalysis' %}">Report Analysis</a></li>
+
+        <li><a href="{% url 'info' %}">Thyroid Info</a></li>
+        <li><a href="{% url 'analysis' %}">Research</a></li>
+        <li><a href="{% url 'doctor' %}">Hospitals</a></li>
+        <li><a href="{% url 'thyroid_model' %}">3D Thyroid Model</a></li>
+
+        {% if user.is_authenticated %}
+            <li class="dropdown" id="profile-dropdown">
+                <a href="#" class="dropdown-toggle" id="profile-dropdown-toggle">
+                    <span class="profile-icon-container">
+                        <img src="{% static 'icon.png' %}" alt="Profile Icon" class="profile-icon">
+                    </span>
+                </a>
+                <ul class="dropdown-menu" id="profile-dropdown-menu">
+                    <li><a href="{% url 'profile_dashboard' %}">Profile</a></li>
+                    <li><a onclick="showSuccessAlert(event)">Logout</a></li>
+                </ul>
+            </li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<style>
+    /* Navbar Styling */
+    #navbar {
+        background-color: #2b2e4a;
+        padding: 1em 2em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px; /* Fixed height for consistency */
+        box-sizing: border-box;
+    }
+
+    #navbar-brand {
+        color: #fff;
+        font-size: 1.5em;
+        font-weight: bold;
+        margin:2px;
+    }
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* spacing between image and text */
+}
+    #custom-navbar-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        gap: 1.5em; /* Space between items */
+    }
+
+    #custom-navbar-menu li {
+        margin: 0;
+    }
+
+    #custom-navbar-menu a {
+        color: #f9f9f9;
+        text-decoration: none;
+        font-size: 1em;
+        transition: color 0.3s;
+    }
+
+    #custom-navbar-menu a:hover {
+        color: #ffd700;
+    }
+
+    /* Profile Dropdown */
+    #profile-dropdown {
+        position: relative;
+    }
+
+    #profile-dropdown-toggle {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+        margin-right: 0.5em;
+    }
+
+    #profile-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background-color: #2b2e4a;
+        padding: 0.5em 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        z-index: 1000;
+    }
+
+    #profile-dropdown-menu li {
+        padding: 0.5em 1em;
+        list-style: none;
+    }
+
+    #profile-dropdown-menu li a {
+        color: #f9f9f9;
+        text-decoration: none;
+        font-size: 1em;
+        display: block;
+    }
+
+    #profile-dropdown-menu li a:hover {
+        background-color: #414467;
+        color: #ffd700;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        #navbar {
+            flex-direction: column;
+            align-items: flex-start;
+            height: auto; /* Adjust height for smaller screens */
+        }
+
+        #custom-navbar-menu {
+            flex-direction: column;
+            width: 100%;
+            display: none;
+        }
+
+        #custom-navbar-menu.active {
+            display: flex;
+        }
+
+        #custom-navbar-menu li {
+            margin: 0.5em 0;
+        }
+
+        .navbar-toggle {
+            display: block;
+            cursor: pointer;
+            font-size: 1.5em;
+            color: #f9f9f9;
+        }
+    }
+
+    /* Hide toggle button on larger screens */
+    @media (min-width: 769px) {
+        .navbar-toggle {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    function toggleCustomMenu() {
+        const menu = document.getElementById('custom-navbar-menu');
+        menu.classList.toggle('active');
+    }
+
+    // Toggle profile dropdown visibility
+    document.getElementById("profile-dropdown-toggle").addEventListener("click", function(event) {
+        event.preventDefault();
+        const dropdownMenu = document.getElementById("profile-dropdown-menu");
+        dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function(event) {
+        const dropdown = document.getElementById("profile-dropdown");
+        const dropdownMenu = document.getElementById("profile-dropdown-menu");
+        if (!dropdown.contains(event.target)) {
+            dropdownMenu.style.display = "none";
+        }
+    });
+
+
+</script>

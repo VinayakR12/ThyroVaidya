@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #f5f7fa, #c3e5fc);
+    }
+
+    .main-heading {
+        text-align: center;
+        font-size: 50px;
+        color: #003c8f;
+        margin-top: 25px;
+        font-weight: bold;
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .description {
+        text-align: center;
+        font-size: 20px;
+        color: #555;
+        margin: 20px auto 40px;
+        max-width: 1150px;
+        line-height: 1.8;
+    }
+
+    .feature-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+        margin: 40px auto;
+        max-width: 1000px;
+        padding: 20px;
+    }
+
+    .feature {
+        width: 100%;
+        background: linear-gradient(to right, #ffffff, #e3f2fd);
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        padding: 30px 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .feature h2 {
+        font-size: 40px;
+        font-weight:600;
+        color: #004c8c;
+        margin-bottom: 10px;
+    }
+
+    .feature p {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .feature a {
+        text-decoration: none;
+    }
+
+    .feature button {
+        background: linear-gradient(to right, #003c8f, #0277bd);
+        color: #fff;
+        border: none;
+        padding: 20px 120px;
+        font-size: 28px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .feature button:hover {
+        background: linear-gradient(to right, #0277bd, #01579b);
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="main-heading">Thyroid Report Analysis</h1>
+<p class="description">
+    Welcome to <strong>ThyroVaidya</strong>, your trusted partner in managing thyroid health. We offer an intuitive and powerful platform designed to enhance your wellness journey by providing personalized insights into your thyroid condition. Here's how we can help you:
+</p>
+
+<div class="feature-container">
+    <div class="feature">
+        <h2>Enter Thyroid Details</h2>
+        <p>Provide your thyroid report parameters manually for a detailed and personalized health analysis. Our intelligent system will generate insights tailored to your specific needs, guiding you toward better thyroid health management.</p>
+        <a href="{% url 'predict' %}"><button>Enter Details</button></a>
+    </div>
+    <div class="feature">
+        <h2>Upload Thyroid Report</h2>
+        <p>Upload your thyroid report in PDF format and instantly receive a comprehensive, AI-driven ThyroVaidya analysis Report. Benefit from fast, accurate insights and take action with a clearer understanding of your thyroid health.</p>
+        <a href="{% url 'upload' %}"><button>Upload Report</button></a>
+    </div>
+</div>
+{% endblock %}
